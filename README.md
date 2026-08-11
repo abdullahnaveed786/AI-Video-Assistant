@@ -45,4 +45,20 @@ SARVAM_API_KEY=<your_sarvam_key>      # required for hinglish transcription
 WHISPER_MODEL=small                   # optional (default: small)
 ```
 
+## Important Files
+- `app.py` — Streamlit UI and pipeline orchestration
+- `main.py` — CLI runner and `run_pipeline()`
+- `Requirements.txt` — dependency list
+- `core/` — transcription, summarization, extractor, RAG, vector store
+- `utils/` — audio download/convert/chunk utilities
 
+## Notes & Prereqs
+- Python 3.10+ recommended
+- System `ffmpeg` must be installed and on PATH
+- Local Whisper models are large — GPU recommended for performance
+- Chroma persists vectors to `vector_db/`
+
+## Troubleshooting
+- FFmpeg errors → install FFmpeg and ensure PATH is set
+- Missing API keys → set values in `.env`
+- Slow transcription → try a smaller `WHISPER_MODEL` or use GPU
