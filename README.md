@@ -35,3 +35,14 @@ streamlit run app.py
 # or
 python main.py
 ```
+
+## Environment
+Create a `.env` file in the project root with the keys you need:
+
+```
+MISTRAL_API_KEY=<your_mistral_key>    # required for LLM calls
+SARVAM_API_KEY=<your_sarvam_key>      # required for hinglish transcription
+WHISPER_MODEL=small                   # optional (default: small)
+```
+
+
