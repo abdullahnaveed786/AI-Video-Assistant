@@ -10,3 +10,28 @@ A compact tool to transcribe, summarise, and chat with meeting-style videos (You
 - Streamlit UI and a simple CLI
 
 
+## Quickstart
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/abdullahnaveed786/AI-Video-Assistant.git
+cd AI-Video-Assistant
+```
+
+2. Create and activate a virtual environment, then install deps:
+
+```bash
+python -m venv .venv
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+pip install -r Requirements.txt
+```
+
+3. Run the app (Streamlit UI) or CLI:
+
+```bash
+streamlit run app.py
+# or
+python main.py
+```
