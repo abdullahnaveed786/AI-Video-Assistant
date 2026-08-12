@@ -1,7 +1,7 @@
 import whisper
 import os
 import requests
-from pydub import AudioSegment
+import wave
 
 # Sarvam's sync STT-translate API rejects audio longer than 30s.
 # We slice each chunk into 25s pieces (with a 5s safety margin) before sending.
@@ -67,24 +67,33 @@ def transcribe_chunk_sarvam(chunk_path: str) -> str:
     """
     if not SARVAM_API_KEY:
         raise RuntimeError("SARVAM_API_KEY is not set in environment / .env")
-
-    audio = AudioSegment.from_wav(chunk_path)
-    piece_ms = SARVAM_PIECE_SECONDS * 1000
-
     full_text = ""
-    total_pieces = (len(audio) + piece_ms - 1) // piece_ms
 
-    for i, start in enumerate(range(0, len(audio), piece_ms)):
-        piece = audio[start: start + piece_ms]
-        piece_path = f"{chunk_path}_sv_{i}.wav"
-        piece.export(piece_path, format="wav")
+    with wave.open(chunk_path, "rb") as wf:
+        framerate = wf.getframerate()
+        nframes = wf.getnframes()
+        frames_per_piece = SARVAM_PIECE_SECONDS * framerate
 
-        try:
-            print(f"  → Sarvam piece {i + 1}/{total_pieces} ...")
-            full_text += _send_to_sarvam(piece_path) + " "
-        finally:
-            if os.path.exists(piece_path):
-                os.remove(piece_path)
+        total_pieces = (nframes + frames_per_piece - 1) // frames_per_piece
+
+        for i, start in enumerate(range(0, nframes, frames_per_piece)):
+            wf.setpos(start)
+            frames_to_read = min(frames_per_piece, nframes - start)
+            frames = wf.readframes(frames_to_read)
+
+            piece_path = f"{chunk_path}_sv_{i}.wav"
+            with wave.open(piece_path, "wb") as out:
+                out.setnchannels(wf.getnchannels())
+                out.setsampwidth(wf.getsampwidth())
+                out.setframerate(framerate)
+                out.writeframes(frames)
+
+            try:
+                print(f"  → Sarvam piece {i + 1}/{total_pieces} ...")
+                full_text += _send_to_sarvam(piece_path) + " "
+            finally:
+                if os.path.exists(piece_path):
+                    os.remove(piece_path)
 
     return full_text.strip()
 

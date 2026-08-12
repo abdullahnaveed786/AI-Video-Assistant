@@ -10,6 +10,7 @@ ffmpeg-python>=0.2.0              # FFmpeg bindings (FFmpeg binary must be insta
 openai-whisper>=20231117          # OpenAI Whisper (runs locally)
 torch>=2.2.0                      # PyTorch backend for Whisper
 torchaudio>=2.2.0                 # Audio utilities for PyTorch
+torchvision>=0.17.0               # Vision utilities for transformers pipeline
 
 # ── Translation (Hindi → English) ─────────────────────────────────────────────
 deep-translator>=1.11.4           # Lightweight translation wrapper (Google backend)
@@ -23,6 +24,7 @@ mistralai>=0.4.0                  # Official Mistral Python client
 
 # ── RAG Pipeline ──────────────────────────────────────────────────────────────
 chromadb>=0.5.0                   # Local vector store
+langchain-chroma>=0.1.0           # LangChain Chroma integration
 sentence-transformers>=3.0.0      # HuggingFace embedding models
 langchain-huggingface>=0.0.3      # LangChain ↔ HuggingFace embeddings bridge
 huggingface-hub>=0.23.0           # Model downloading from HuggingFace Hub
@@ -42,3 +44,4 @@ python-dotenv>=1.0.0              # Load API keys from .env
 numpy>=1.26.0
 tqdm>=4.66.0                      # Progress bars
 requests>=2.32.0
+audioop-lts>=0.2.0                # Backport of audioop for Python 3.13+
